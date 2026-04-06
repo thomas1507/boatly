@@ -1,0 +1,16 @@
+[Unit]
+Description=Boatly TEST - Go SQLite Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=thomas
+Group=thomas
+WorkingDirectory=/home/thomas/boatly-test
+Environment="PORT=3051"
+ExecStart=/home/thomas/boatly-test/boatly-server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
