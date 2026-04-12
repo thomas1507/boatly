@@ -6,9 +6,9 @@ After=network.target
 Type=simple
 User=thomas
 Group=thomas
-WorkingDirectory=/home/thomas/boatly-test
+WorkingDirectory=/home/thomas/apps/boatly-test
 Environment="PORT=3051"
-ExecStart=/home/thomas/boatly-test/boatly-server
+ExecStart=/home/thomas/apps/boatly-test/boatly-server
 Restart=always
 RestartSec=5
 
