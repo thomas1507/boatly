@@ -1,42 +1,4 @@
-name: Deploy to Test
-
-on:
-  push:
-    branches: [ "test" ]
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
-jobs:
-  deploy:
-    name: Build & Deploy Test
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
-
-    - name: Setup Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.21'
-
-    - name: Build Binary
-      run: |
-        GOOS=linux GOARCH=amd64 go build -o boatly-server cmd/server/main.go
-        echo "✅ Binary built successfully"
-
-    - name: Copy to Test Server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        # ADDED: boatly-test.service to the source list
-        source: "boatly-server,static/,boatly-test.service"
-        target: "/home/${{ secrets.USERNAME }}/apps/boatly-test/"
-
-    - name: Restart Test Service
+- name: Restart Test Service
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -57,4 +19,4 @@ jobs:
           sudo systemctl restart boatly-test
           
           echo "✅ Test environment deployed successfully to https://t.boatly.nl"
-        sudo systemctl status boatly-test --no-pager
+          sudo systemctl status boatly-test --no-pager
